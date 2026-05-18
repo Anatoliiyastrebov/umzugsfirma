@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { HomeScrollReset } from "@/components/home-scroll-reset";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { SITE } from "@/lib/constants";
@@ -72,6 +73,7 @@ export default function RootLayout({
   return (
     <html lang="de" className={`${inter.variable} scroll-smooth`}>
       <body className="min-h-screen bg-white font-sans text-slate-900 antialiased">
+        <HomeScrollReset />
         <Header />
         <main>{children}</main>
         <Footer />

@@ -4,6 +4,7 @@ import { Menu, Truck, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState, type MouseEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { setHomeScrollFlag } from "@/components/home-scroll-reset";
 import { Button } from "@/components/ui/button";
 import { NAV_LINKS, SITE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -29,15 +30,7 @@ export function Header() {
   const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     setMobileOpen(false);
-
-    const isHome = window.location.pathname === "/";
-
-    if (isHome) {
-      window.location.reload();
-      return;
-    }
-
-    window.location.assign("/");
+    goToHomeFresh();
   };
 
   return (
@@ -133,6 +126,30 @@ export function Header() {
       </AnimatePresence>
     </header>
   );
+}
+
+function goToHomeFresh() {
+  setHomeScrollFlag();
+
+  if ("scrollRestoration" in history) {
+    history.scrollRestoration = "manual";
+  }
+
+  if (window.location.hash) {
+    history.replaceState(null, "", window.location.pathname);
+  }
+
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
+  const isHome =
+    window.location.pathname === "/" && window.location.search === "";
+
+  if (isHome) {
+    window.location.reload();
+    return;
+  }
+
+  window.location.replace(`${window.location.origin}/`);
 }
 
 function scrollToContact() {
